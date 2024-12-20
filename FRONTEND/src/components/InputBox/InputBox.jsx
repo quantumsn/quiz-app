@@ -10,8 +10,7 @@ export function InputBox({ placeholder, values, onChangeValue, styles }) {
         onChange={(e) => onChangeValue(e.target.value)}
         label={placeholder}
         variant="standard"
-        style={{ fontSize: "10rem" }}
-        className="w-96 "
+        className="md:w-4/5 w-72 "
         required
       />
     </>

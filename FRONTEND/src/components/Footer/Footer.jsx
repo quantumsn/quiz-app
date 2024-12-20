@@ -5,7 +5,7 @@ export default function Footer() {
     <>
       <footer className="bg-white border-t mt-8 px-4 py-2.5">
         <div className="flex justify-between flex-wrap items-center py-4">
-          <div className="p-10">
+          <div className="md:p-10 p-5">
             <Link to="/">
               <h3 className="text-orange-700 text-xl font-bold">Quizentum</h3>
             </Link>
@@ -19,13 +19,21 @@ export default function Footer() {
                 <li className="mb-4">
                   <Link
                     className="hover:text-orange-700"
-                    to="https://www.instagram.com/quantum_sn/"
+                    to="https://www.linkedin.com/in/samprity-nayak-85175826b/"
                     target="_blank"
                   >
-                    Instagram
+                    Linkedin
                   </Link>
                 </li>
-                <li>Facebook</li>
+                <li>
+                  <Link
+                    className="hover:text-orange-700"
+                    to="https://github.com/quantumsn"
+                    target="_blank"
+                  >
+                    GitHub
+                  </Link>
+                </li>
               </ul>
             </div>
 
@@ -34,13 +42,21 @@ export default function Footer() {
                 LEGAL
               </h2>
               <ul className="text-gray-500 font-medium cursor-pointer">
-                <li className="mb-4">Privacy Policy</li>
+                <li className="mb-4">
+                  <Link
+                    className="hover:text-orange-700"
+                    to="/privacy"
+                    target="_blank"
+                  >
+                    Privacy Policy
+                  </Link>
+                </li>
                 <li>Terms & Conditions</li>
               </ul>
             </div>
           </div>
         </div>
-        <div className="border-t px-10 py-4">
+        <div className="border-t md:px-10 px-5 py-4">
           <p className=" text-sm text-gray-500">
             &copy; 2024 &nbsp;
             <Link

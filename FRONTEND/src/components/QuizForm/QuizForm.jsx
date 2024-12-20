@@ -1,10 +1,15 @@
 import { QuestionBox } from "../QuestionBox/QuestionBox";
 import Button from "@mui/material/Button";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function QuizForm() {
-  let [questions, setQuestions] = useState([{ quesText: "", options: [""] }]);
+  let [questions, setQuestions] = useState([
+    { quesText: "", options: [""], answer: "" },
+  ]);
   let [title, setTitle] = useState("");
+
+  const navigate = useNavigate();
 
   const addQuesBox = () => {
     setQuestions((prevQuestions) => {
@@ -19,12 +24,42 @@ export default function QuizForm() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(title);
-    console.log(questions);
-    setQuestions([{ quesText: "", options: [""] }]);
+    const url = import.meta.env.VITE_BACKEND_API_URL;
+    let bodyContent = {
+      quiz: {
+        title,
+        questions: questions.map((ques) => ({
+          ...ques,
+          answer:
+            ques.answer[0].toUpperCase() +
+            ques.answer.slice(1).toLowerCase().trim(),
+        })),
+      },
+    };
+    try {
+      let res = await fetch(`${url}/quiz/new`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(bodyContent),
+      });
+
+      if (!res.ok) {
+        throw new Error("Bhag bsdk");
+      } else {
+        let resData = await res.json();
+        navigate(`/quiz/${resData.quizId}`);
+        console.log(resData);
+      }
+    } catch (err) {
+      console.error("Error sending data to Backend : ", err);
+    }
     setTitle("");
+    setQuestions([{ quesText: "", options: [""], answer: "" }]);
   };
 
   return (
@@ -32,7 +67,8 @@ export default function QuizForm() {
       onSubmit={handleSubmit}
       className="min-h-screen text-white flex items-center justify-center flex-col"
     >
-      <h1 className="w-1/2">
+      <h1 className="text-gray-900 font-bold text-3xl m-8">Create New Quiz</h1>
+      <h1 className="md:w-1/2">
         <input
           type="text"
           placeholder="Write your Quiz tiltle"
