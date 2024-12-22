@@ -37,3 +37,33 @@ Feel free to contribute and make this project even more amazing. 😊
 1. Clone the repository:  
    ```bash
    git clone https://github.com/your-username/quizentum.git
+   ```
+2. Install dependencies for both frontend and backend:  
+   ```bash
+   cd frontend && npm install
+   cd ../backend && npm install
+   ```
+3. Start the development servers:  
+   ```bash
+   cd frontend && npm run dev
+   cd ../backend && node index.js
+   ```
+4. Enjoy exploring Quizentum!  
+
+---
+
+## 🛠️ Tech Stack
+- **Frontend:** React, React Router  
+- **Backend:** Node.js, Express.js  
+- **Authentication:** JWT (JSON Web Tokens)  
+- **Database:** MongoDB  
+
+---
+
+## 🤝 Contributing
+Contributions are welcome! Open an issue or submit a pull request if you'd like to help. Let's build something great together!  
+
+---
+
+## 📄 License
+This project is open-source and available under the MIT License.
