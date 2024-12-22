@@ -8,23 +8,22 @@ export default function Header() {
   const { isAuthenticated, logout } = useAuth();
   const handleLogout = async () => {
     const url = import.meta.env.VITE_BACKEND_API_URL;
-    // try {
-    //   let response = await fetch(`${url}/user/logout`, {
-    //     method: "GET",
-    //     credentials: "include",
-    //   });
+    try {
+      let response = await fetch(`${url}/user/logout`, {
+        method: "GET",
+        credentials: "include",
+      });
 
-    //   if (!response.ok) {
-    //     console.error("Logout Error:", errorData.error);
-    //   } else {
-    //     let message = await response.json();
-    //     // logout();
-    //     console.log(message);
-    //   }
-    // } catch (err) {
-    //   console.error(err.message);
-    // }
-    console.log(url);
+      if (!response.ok) {
+        console.error("Logout Error:", errorData.message);
+      } else {
+        let message = await response.json();
+        logout();
+        console.log(message);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
   };
 
   return (

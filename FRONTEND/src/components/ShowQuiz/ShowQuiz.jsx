@@ -4,7 +4,7 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import ShowParticipents from "../ShowParticipents/ShowParticipents";
 import ShareIcon from "@mui/icons-material/Share";
 import ShareQuiz from "../ShareQuiz/ShareQuiz";
@@ -22,32 +22,44 @@ export default function ShowQuiz() {
   const [participents, setParticipents] = useState(null);
   const [shareBox, setShareBox] = useState(false);
 
+  const navigate = useNavigate();
+
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function getData() {
       const url = import.meta.env.VITE_BACKEND_API_URL;
-      let res = await fetch(`${url}/quiz/${id}`, {
-        method: "GET",
-        credentials: "include",
-      });
-      let allData = await res.json();
-      let newData = [Array(questions.length)];
-      allData.data.questions.map(
-        (question, idx) => (newData[idx] = { _id: question._id, ans: null })
-      );
+      try {
+        let res = await fetch(`${url}/quiz/${id}`, {
+          method: "GET",
+          credentials: "include",
+        });
+        if (res.ok) {
+          let allData = await res.json();
+          let newData = [Array(questions.length)];
+          allData.data.questions.map(
+            (question, idx) => (newData[idx] = { _id: question._id, ans: null })
+          );
 
-      if (allData.isOwner) {
-        setAfterSub(true);
-        setIsOwner(true);
+          if (allData.isOwner) {
+            setAfterSub(true);
+            setIsOwner(true);
+          }
+          setTitle(allData.data.title);
+          setParticipents(allData.data.participents);
+          setQuizId(allData.data._id);
+          setQuestions(allData.data.questions);
+          setAnswers(newData);
+
+          setIsLoading(false);
+        } else {
+          let errData = await res.json();
+          console.log(errData);
+          navigate("/login");
+        }
+      } catch (err) {
+        console.log(err);
       }
-      setTitle(allData.data.title);
-      setParticipents(allData.data.participents);
-      setQuizId(allData.data._id);
-      setQuestions(allData.data.questions);
-      setAnswers(newData);
-
-      setIsLoading(false);
     }
     getData();
   }, []);
@@ -71,30 +83,30 @@ export default function ShowQuiz() {
       top: 0,
       behavior: "smooth",
     });
-    // const url = import.meta.env.VITE_BACKEND_API_URL;
-    // let result = { marks: marksCount, quizId };
-    // try {
-    //   let res = await fetch(`${url}/result`, {
-    //     method: "POST",
-    //     credentials: "include",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(result),
-    //   });
-    //   if (!res.ok) {
-    //     let errorData = await res.json();
-    //     console.error(
-    //       "Error to sending data to the backned : ",
-    //       errorData.error
-    //     );
-    //   } else {
-    //     let resData = await res.json();
-    //     console.log(resData);
-    //   }
-    // } catch (err) {
-    //   console.log("Error to sending data to the backned : ", err);
-    // }
+    const url = import.meta.env.VITE_BACKEND_API_URL;
+    let result = { marks: marksCount, quizId };
+    try {
+      let res = await fetch(`${url}/result`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(result),
+      });
+      if (!res.ok) {
+        let errorData = await res.json();
+        console.error(
+          "Error to sending data to the backned : ",
+          errorData.error
+        );
+      } else {
+        let resData = await res.json();
+        console.log(resData);
+      }
+    } catch (err) {
+      console.log("Error to sending data to the backned : ", err);
+    }
   };
 
   if (isLoading) {

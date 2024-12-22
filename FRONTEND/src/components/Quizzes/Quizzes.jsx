@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 import Animations from "../Loader/Animations";
 import { useFlashMsg } from "../../contexts/FlashMsgProvidor";
@@ -8,6 +8,8 @@ import FlashMsg from "../FlashMsg/FlashMsg";
 export default function Quizzes() {
   let [quizzes, setQuizzes] = useState([]);
   let { flashMsg } = useFlashMsg();
+
+  const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -23,8 +25,9 @@ export default function Quizzes() {
           let errorData = await res.json();
           console.log(
             "Error to fetching data from backend : ",
-            errorData.error
+            errorData.message
           );
+          navigate("/login");
         } else {
           let data = await res.json();
           setQuizzes(data);

@@ -8,7 +8,7 @@ export default function ShareQuiz() {
   let urlRef = useRef(null);
   const handleCopyUrl = () => {
     urlRef.current?.select();
-    window.navigator.clipboard.writeText(currentUrl);
+    window.navigator.clipboard.writeText(url);
   };
   return (
     <div className="flex justify-center m-4">

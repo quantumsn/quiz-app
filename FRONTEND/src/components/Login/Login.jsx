@@ -8,7 +8,7 @@ export default function Login() {
   const [userData, setUserData] = useState({ username: "", password: "" });
   const [errMsg, setErrMsg] = useState(null);
   const navigate = useNavigate();
-  // const { login } = useAuth();
+  const { login } = useAuth();
   const { addFlashMsg } = useFlashMsg();
 
   const handleSumbit = async (e) => {
@@ -25,10 +25,10 @@ export default function Login() {
       });
       if (!response.ok) {
         let errorData = await response.json();
-        console.error("Login Error:", errorData.error);
-        setErrMsg(`${errorData.error} : Password or username is incorrect`);
+        console.error("Login Error:", errorData.message);
+        setErrMsg(errorData.message);
       } else {
-        // login("authenticated");
+        login("authenticated");
         let successMsg = await response.json();
         addFlashMsg(successMsg.message);
         navigate("/");

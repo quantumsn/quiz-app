@@ -12,7 +12,7 @@ export default function SignUp() {
   });
   const [errMsg, setErrMsg] = useState(null);
   const navigate = useNavigate();
-  // const { login } = useAuth();
+  const { login } = useAuth();
   const { addFlashMsg } = useFlashMsg();
 
   const handleSumbit = async (e) => {
@@ -30,9 +30,9 @@ export default function SignUp() {
       if (!response.ok) {
         let errorData = await response.json();
         console.error("Signup Error:", errorData.error);
-        setErrMsg(errorData.error);
+        setErrMsg("Username is already exist");
       } else {
-        // login("authenticated");
+        login("authenticated");
         let successMsg = await response.json();
         addFlashMsg(successMsg.message);
         navigate("/");
@@ -44,7 +44,7 @@ export default function SignUp() {
   };
 
   return (
-    <div className="flex flex-col items-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+    <div className="flex flex-col items-center px-6 py-8 mx-auto md:h-screen lg:py-4">
       {errMsg != null && (
         <div className="md:w-1/3 my-8 flex justify-between bg-red-200 rounded-md p-4">
           <p className="text-red-900">{errMsg}.</p>

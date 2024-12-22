@@ -53,7 +53,7 @@ export default function QuizForm() {
       } else {
         let resData = await res.json();
         navigate(`/quiz/${resData.quizId}`);
-        console.log(resData);
+        console.log(resData.message);
       }
     } catch (err) {
       console.error("Error sending data to Backend : ", err);
